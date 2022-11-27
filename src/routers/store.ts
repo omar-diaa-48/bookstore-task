@@ -17,4 +17,9 @@ router.get("/", async function (req: Request, res: Response) {
 	res.json({ data: records })
 });
 
+router.post("/", async function (req: Request, res: Response) {
+	const record = await controller.addOne(req.body)
+	res.json({ data: record })
+});
+
 export default router;

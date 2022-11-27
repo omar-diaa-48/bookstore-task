@@ -13,9 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT;
 const NODE_ENV = process.env.NODE_ENV;
 
-app.use("/store", routes.storeRouter)
-app.use("/author", routes.authorRouter)
-app.use("/book", routes.bookRouter)
+app.use("/stores", routes.storeRouter)
+app.use("/authors", routes.authorRouter)
+app.use("/books", routes.bookRouter)
 
 const start = async (): Promise<void> => {
 	try {
