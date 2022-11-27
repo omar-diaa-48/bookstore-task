@@ -1,4 +1,5 @@
 import { DataTypes, Model } from "sequelize";
+import { v4 as uuidv4 } from "uuid";
 import sequelizeConnection from "../db/config";
 
 export interface IStore {
@@ -15,8 +16,9 @@ class Store extends Model {
 
 Store.init({
 	id: {
-		type: DataTypes.UUIDV4,
+		type: DataTypes.STRING,
 		primaryKey: true,
+		unique: true
 	},
 	name: {
 		type: DataTypes.STRING,
@@ -29,7 +31,14 @@ Store.init({
 		unique: false
 	}
 }, {
-	sequelize: sequelizeConnection
+	sequelize: sequelizeConnection,
+	timestamps: false,
+	createdAt: false,
+	updatedAt: false
+})
+
+Store.beforeCreate((record) => {
+	record.id = uuidv4()
 })
 
 export default Store;

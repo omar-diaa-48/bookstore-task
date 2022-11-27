@@ -1,4 +1,5 @@
 import { DataTypes, Model } from "sequelize";
+import { v4 as uuidv4 } from "uuid";
 import sequelizeConnection from "../db/config";
 
 export interface IBook {
@@ -16,7 +17,7 @@ class Book extends Model {
 
 Book.init({
 	id: {
-		type: DataTypes.UUIDV4,
+		type: DataTypes.STRING,
 		primaryKey: true,
 	},
 	name: {
@@ -30,7 +31,14 @@ Book.init({
 		unique: false
 	}
 }, {
-	sequelize: sequelizeConnection
+	sequelize: sequelizeConnection,
+	timestamps: false,
+	createdAt: false,
+	updatedAt: false
+})
+
+Book.beforeCreate((record) => {
+	record.id = uuidv4()
 })
 
 export default Book;
