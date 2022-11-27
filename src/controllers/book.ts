@@ -1,20 +1,19 @@
-import { IBook } from "../models/book";
-import { IPagination } from "../utils/types";
+import Book from "../models/book";
+import { IModelGetManyResponse, IPagination } from "../utils/types";
 import BaseController from "./base";
 
-const data: IBook[] = [
-	{ id: "1", name: "Book 1", pages: 10 },
-	{ id: "2", name: "Book 2", pages: 32 },
-]
-
-class AuthorController extends BaseController<IBook> {
-	getById(id: string): Promise<IBook> {
-		return Promise.resolve(data[0]);
+class BookController extends BaseController<Book> {
+	getById(id: string): Promise<Book | null> {
+		return Book.findByPk(id)
 	}
 
-	getMany(pagination: IPagination): Promise<IBook[]> {
-		return Promise.resolve(data);
+	getMany(pagination: IPagination): Promise<IModelGetManyResponse<Book>> {
+		return Book.findAndCountAll(pagination)
+	}
+
+	addOne(payload: Omit<Book, "id">): Promise<Book> {
+		return Book.create(payload);
 	}
 }
 
-export default AuthorController;
+export default BookController;

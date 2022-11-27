@@ -13,7 +13,7 @@ router.get("/:id", async function (req, res) {
 });
 
 router.get("/", async function (req: Request, res: Response) {
-	const records = await controller.getMany({ limit: 10, skip: 0 })
+	const records = await controller.getMany({ limit: 10, offset: 0 })
 	res.json({ data: records })
 });
 
