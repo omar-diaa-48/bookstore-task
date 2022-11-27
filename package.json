@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build": "tsc",
+		"build": "rimraf ./build && tsc",
 		"start": "node ./build/index.js",
 		"dev": "nodemon src/index.ts"
 	},
@@ -14,6 +14,7 @@
 	"devDependencies": {
 		"@types/node": "^18.11.9",
 		"nodemon": "^2.0.20",
+		"rimraf": "^3.0.2",
 		"typescript": "^4.9.3"
 	}
 }
