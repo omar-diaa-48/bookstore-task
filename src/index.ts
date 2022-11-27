@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+import connection from "./db/config";
 import * as routes from "./routers";
 
 dotenv.config();
@@ -16,4 +17,14 @@ app.use("/store", routes.storeRouter)
 app.use("/author", routes.authorRouter)
 app.use("/book", routes.bookRouter)
 
-app.listen(PORT, () => console.log(`Backend is up and running on port ${PORT}, with environment ${NODE_ENV}`))
+const start = async (): Promise<void> => {
+	try {
+		await connection.sync();
+		app.listen(PORT, () => console.log(`Backend is up and running on port ${PORT}, with environment ${NODE_ENV}`))
+	} catch (error) {
+		console.error(error);
+		process.exit(1);
+	}
+};
+
+void start();
