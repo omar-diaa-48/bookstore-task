@@ -19,7 +19,8 @@ app.use("/books", routes.bookRouter)
 
 const start = async (): Promise<void> => {
 	try {
-		await connection.sync();
+		await connection.sync({ schema: process.env.DB_NAME });
+
 		app.listen(PORT, () => console.log(`Backend is up and running on port ${PORT}, with environment ${NODE_ENV}`))
 	} catch (error) {
 		console.error(error);

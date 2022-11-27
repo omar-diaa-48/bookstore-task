@@ -1,0 +1,44 @@
+version: '3.4'
+services:
+  database:
+    image: mysql:latest
+    container_name: db-container
+    restart: unless-stopped
+    # command: --init-file ./init.sql:/data/application/init.sql
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+      - MYSQL_DATABASE=$DB_NAME
+    ports:
+      - '5000:3306'
+    expose:
+      - '3306'
+    volumes:
+      - .docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+      - db-volume:/var/lib/mysql
+  backend:
+    container_name: backend-container
+    restart: on-failure
+    build: ./
+    env_file: ./.env
+    environment:
+      - PORT=9000
+      - NODE_ENV=development
+      - DB_NAME=$DB_NAME
+      - DB_USER=$DB_USER
+      - DB_HOST=database
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_PORT=$DB_PORT
+    ports:
+      - '9000:9000'
+    expose:
+      - '9000'
+    depends_on:
+      - database
+    links:
+      - database
+    stdin_open: true
+    tty: true
+volumes:
+  db-volume:
+    driver: local
